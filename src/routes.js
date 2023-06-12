@@ -10,6 +10,8 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
+import ExaminationPage from './pages/ExaminationPage';
+import EditExaminationPage from './pages/EditExaminationPage';
 
 // ----------------------------------------------------------------------
 
@@ -25,6 +27,8 @@ export default function Router() {
         { path: 'grammars', element: <GrammarsPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
+        { path: 'exams', element: <ExaminationPage />, },
+        { path: 'exams/:id', element: <EditExaminationPage /> }
       ],
     },
     {
