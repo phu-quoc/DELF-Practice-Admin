@@ -9,42 +9,65 @@ import {
     FormControlLabel,
     Radio,
 } from '@mui/material';
+import * as examinationAPI from '../api/examination';
 
 export default function Listening(props) {
     const [question, setQuestion] = useState("");
-    const [answer1, setAnswer1] = useState({});
-    const [answer2, setAnswer2] = useState({});
-    const [answer3, setAnswer3] = useState({});
+    const [answers, setAnswers] = useState([{}, {}, {}]);
+    const [point, setPoint] = useState(null)
 
     const onChangeAnswer = (event, index) => {
+        setAnswers(answers.map((value, idx) => {
+            if (idx === index) {
+                return { ...value, content: event.target.value }
+            }
+            return value;
+        }))
+
+    }
+    const selectIsCorrect = (event) => {
+        const isCorrectIndex = event.target.value;
+        setAnswers(answers.map((value, index) => {
+            if (index === Number(isCorrectIndex)) {
+                return { ...value, isCorrect: true }
+            }
+            return { ...value, isCorrect: false };
+        }))
     }
     const onSubmit = () => {
-        console.log(question);
-        console.log(answer1);
-        console.log(answer2);
-        console.log(answer3);
+        const data = {
+            question,
+            options: [...answers],
+            point: Number(point),
+            category: props.category,
+            exercise: props.exercise,
+        }
+        console.log(data);
+        examinationAPI.postQuestion(data);
     }
 
     return (
         <>
-            <TextField label='Question 1' name='question' onChange={event => setQuestion(event.target.value)} />
+            <TextField label='Question' name='question' onChange={event => setQuestion(event.target.value)} />
             <RadioGroup
                 aria-labelledby="demo-row-radio-buttons-group-label"
                 name="radio-buttons-group"
+                onChange={selectIsCorrect}
             >
                 <div>
-                    <TextField label='answer' onChange={event => setAnswer1({ content: event.target.value })} control={<Radio />} style={{ width: 450 }} />
-                    <FormControlLabel value="A" control={<Radio />} />
+                    <TextField label='answer' onChange={event => onChangeAnswer(event, 0)} control={<Radio />} style={{ width: 450 }} />
+                    <FormControlLabel value="0" control={<Radio />} />
                 </div>
                 <div>
-                    <TextField label='answer' onChange={event => setAnswer2({ content: event.target.value })} control={<Radio />} style={{ width: 450 }} />
-                    <FormControlLabel value="B" control={<Radio />} />
+                    <TextField label='answer' onChange={event => onChangeAnswer(event, 1)} control={<Radio />} style={{ width: 450 }} />
+                    <FormControlLabel value="1" control={<Radio />} />
                 </div>
                 <div>
-                    <TextField label='answer' onChange={event => setAnswer3({ content: event.target.value })} control={<Radio />} style={{ width: 450 }} />
-                    <FormControlLabel value="male" control={<Radio />} />
+                    <TextField label='answer' onChange={event => onChangeAnswer(event, 2)} control={<Radio />} style={{ width: 450 }} />
+                    <FormControlLabel value="2" control={<Radio />} />
                 </div>
             </RadioGroup>
+            <TextField type='number' label='Point' name='point' onChange={event => setPoint(event.target.value)} />
             <Button variant="contained" onClick={onSubmit}>Add</Button>
         </>
     )

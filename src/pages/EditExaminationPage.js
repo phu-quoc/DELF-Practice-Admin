@@ -23,7 +23,6 @@ import * as examinationAPI from '../api/examination';
 export default function CreateExaminationPage() {
   const params = useParams();
   const [type, setType] = useState('');
-  const [questions, setQuestions] = useState([]);
   const [exerciseId, setExerciseId] = useState(null);
   const [exercises, setExercises] = useState([]);
   const [category, setCategory] = useState(null);
@@ -48,24 +47,23 @@ export default function CreateExaminationPage() {
   const render = (type) => {
     switch (type) {
       case "Listening 1":
-        return <Listening question={setQuestions}/>;
+        return <Listening exercise={exerciseId} category={category} />;
       case "Listening 2":
-        return <Listening />;
+        return <Listening exercise={exerciseId} category={category} />;
       case "Listening 3":
-        return <Listening />;
+        return <Listening exercise={exerciseId} category={category} />;
       case "Reading 1":
-        return <Reading1 />;
+        return <Reading1 exercise={exerciseId} category={category} />;
       case "Reading 2":
-        return <Reading2 />;
+        return <Reading2 exercise={exerciseId} category={category} />;
       default:
-        return <Listening />;
+        return <Listening exercise={exerciseId} category={category} />;
     }
   }
 
   const onChangeExercise = (event) => {
     console.log(event);
     setType(event.target.value)
-    setQuestions(null);
   }
 
   const onAddQuestion = () => {

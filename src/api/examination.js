@@ -54,3 +54,31 @@ export const getExercises = async (id, setExercises) => {
         return null;
     }
 }
+
+export const postQuestion = async (data) => {
+    try {
+        const response = await api.post(`/questions`, { ...data },
+            {
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                }
+            })
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export const updateParagraph = async (id, paragraph) => {
+    try {
+        const response = await api.put(`/exercises/${id}`, { paragraph })
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
