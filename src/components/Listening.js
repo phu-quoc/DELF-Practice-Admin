@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
 
 // @mui
 import {
@@ -40,7 +39,7 @@ export default function Listening(props) {
             options: [...answers],
             point: Number(point),
             category: props.category,
-            exercise: props.exercise,
+            exercise: props.exercise.id,
         }
         console.log(data);
         const response = await examinationAPI.postQuestion(data);

@@ -4,21 +4,16 @@ import { useParams } from 'react-router-dom';
 // @mui
 import {
   Card,
-  Button,
   MenuItem,
   Container,
   TextField,
   Box,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
   Table,
   TableBody,
   TableCell,
   TableRow,
   Checkbox,
   IconButton,
-  TableContainer,
 } from '@mui/material';
 // components
 import Listening from '../components/Listening';
@@ -40,7 +35,7 @@ const TABLE_HEAD = [
 export default function CreateExaminationPage() {
   const params = useParams();
   const [type, setType] = useState('');
-  const [exerciseId, setExerciseId] = useState(null);
+  const [currentExercise, setCurrentExercise] = useState(null);
   const [exercises, setExercises] = useState([]);
   const [category, setCategory] = useState(null);
   const [data, setData] = useState([])
@@ -51,45 +46,39 @@ export default function CreateExaminationPage() {
     examinationAPI.getExercises(params.id, setExercises);
   }, []);
 
-  useEffect(() => {
-    const currentExercises = exercises?.find(exercise => exercise.type === type)
+  const render = (type) => {
+    switch (type) {
+      case "Listening 1":
+        return <Listening exercise={currentExercise} category={category} setData={handleQuestionResponse} />;
+      case "Listening 2":
+        return <Listening exercise={currentExercise} category={category} setData={handleQuestionResponse} />;
+      case "Listening 3":
+        return <Listening exercise={currentExercise} category={category} setData={handleQuestionResponse} />;
+      case "Reading 1":
+        return <Reading1 exercise={currentExercise} category={category} setData={handleQuestionResponse} />;
+      case "Reading 2":
+        return <Reading2 exercise={currentExercise} category={category} setData={handleQuestionResponse} />;
+      default:
+        return <Listening exercise={currentExercise} category={category} setData={handleQuestionResponse} />;
+    }
+  }
+
+  const onChangeExercise = (event) => {
+    const type = event.target.value;
+    setType(type)
+    const currentExercise = exercises?.find(exercise => exercise.type === type)
+    setCurrentExercise(currentExercise)
     if (type.includes('Listening')) {
       setCategory('Listening')
     } else if (type.includes('Reading')) {
       setCategory('Reading')
     }
-    if (currentExercises) {
-      setData(currentExercises)
-      console.log(currentExercises);
-      setExerciseId(currentExercises.id)
-    }
-  }, [type])
-
-  const render = (type) => {
-    switch (type) {
-      case "Listening 1":
-        return <Listening exercise={exerciseId} category={category} setData={handleQuestionResponse} />;
-      case "Listening 2":
-        return <Listening exercise={exerciseId} category={category} setData={handleQuestionResponse} />;
-      case "Listening 3":
-        return <Listening exercise={exerciseId} category={category} setData={handleQuestionResponse} />;
-      case "Reading 1":
-        return <Reading1 exercise={exerciseId} category={category} setData={handleQuestionResponse} />;
-      case "Reading 2":
-        return <Reading2 exercise={exerciseId} category={category} setData={handleQuestionResponse} />;
-      default:
-        return <Listening exercise={exerciseId} category={category} setData={handleQuestionResponse} />;
+    if (currentExercise) {
+      setData(currentExercise)
+      console.log(currentExercise);
     }
   }
 
-  const onChangeExercise = (event) => {
-    console.log(event);
-    setType(event.target.value)
-  }
-
-  const onAddQuestion = () => {
-
-  }
   const handleOpenMenu = (event) => {
     console.log(event.currentTarget.id);
     setId(event.currentTarget.id);

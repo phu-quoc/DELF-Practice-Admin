@@ -57,13 +57,7 @@ export const getExercises = async (id, setExercises) => {
 
 export const postQuestion = async (data) => {
     try {
-        const response = await api.post(`/questions`, { ...data },
-            {
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                }
-            })
+        const response = await api.post(`/questions`, { ...data })
         console.log(response.data);
         return response.data;
     } catch (error) {

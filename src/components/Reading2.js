@@ -11,20 +11,10 @@ import {
 import * as examinationAPI from '../api/examination';
 
 export default function Reading2(props) {
-    const [paragraph, setParagraph] = useState(null)
+    const [paragraph, setParagraph] = useState(props.exercise?.paragraph)
     const [question, setQuestion] = useState("");
     const [answers, setAnswers] = useState([{ content: "False" }, { content: 'True' }]);
     const [point, setPoint] = useState(null)
-
-    const onChangeAnswer = (event, index) => {
-        setAnswers(answers.map((value, idx) => {
-            if (idx === index) {
-                return { ...value, content: event.target.value }
-            }
-            return value;
-        }))
-
-    }
 
     const selectIsCorrect = (event) => {
         const isCorrectIndex = event.target.value;
@@ -42,17 +32,25 @@ export default function Reading2(props) {
             options: [...answers],
             point: Number(point),
             category: props.category,
-            exercise: props.exercise,
+            exercise: props.exercise.id,
         }
         console.log(data);
         const response = await examinationAPI.postQuestion(data);
         props.setData(response);
-        // console.log(paragraph);
+    }
+
+    const onUpdateParagraph = () => {
+        examinationAPI.updateParagraph(props.exercise.id, paragraph);
     }
 
     return (
         <>
-            <TextField rows={5} multiline name='paragraph' label='paragraph' />
+            <TextField
+                rows={5} multiline
+                label='Paragraph'
+                value={paragraph}
+                onChange={event => setParagraph(event.target.value)} />
+            <Button variant="contained" onClick={onUpdateParagraph}>Update Paragraph</Button>
             <TextField label='Question' name='question' onChange={event => setQuestion(event.target.value)} />
             <p>Select answer is correct!</p>
             <RadioGroup
