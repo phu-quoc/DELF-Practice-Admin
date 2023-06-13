@@ -34,7 +34,7 @@ export default function Listening(props) {
             return { ...value, isCorrect: false };
         }))
     }
-    const onSubmit = () => {
+    const onSubmit = async () => {
         const data = {
             question,
             options: [...answers],
@@ -43,7 +43,8 @@ export default function Listening(props) {
             exercise: props.exercise,
         }
         console.log(data);
-        examinationAPI.postQuestion(data);
+        const response = await examinationAPI.postQuestion(data);
+        props.setData(response);
     }
 
     return (

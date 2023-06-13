@@ -36,7 +36,7 @@ export default function Reading1(props) {
         }))
     }
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         const data = {
             question,
             options: [...answers],
@@ -45,7 +45,8 @@ export default function Reading1(props) {
             exercise: props.exercise,
         }
         console.log(data);
-        examinationAPI.postQuestion(data);
+        const response = await examinationAPI.postQuestion(data);
+        props.setData(response);
         // console.log(paragraph);
     }
     return (
