@@ -17,7 +17,7 @@ export default function Reading1(props) {
     // const [answers, setAnswers] = useState([{}, {}, {}]);
     const [point, setPoint] = useState(null)
 
-    const selectIsCorrect = (event) => {
+        const selectIsCorrect = (event) => {
         const isCorrectIndex = event.target.value;
         setAnswers(answers.map((value, index) => {
             if (index === Number(isCorrectIndex)) {
