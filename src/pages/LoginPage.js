@@ -100,11 +100,10 @@ export default function LoginPage() {
               />
 
               <LoginSocialFacebook
-                  isOnlyGetToken
-                  appId={"1826673191083045"}
+                  appId={"2079374509078523"}
                   onLoginStart={() => {}}
                   onResolve={({ provider, data }) => {
-                    console.log(JSON.stringify(data))
+                    console.log(data)
                   }}
                   onReject={(err) => {
                     console.log(err)
