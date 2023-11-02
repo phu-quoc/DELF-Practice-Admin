@@ -3,6 +3,12 @@ import { Helmet } from 'react-helmet-async';
 import { styled } from '@mui/material/styles';
 import { Link, Container, Typography, Divider, Stack, Button } from '@mui/material';
 // hooks
+import axios from "axios";
+
+import { GoogleLogin } from '@react-oauth/google';
+import {LoginSocialFacebook} from "reactjs-social-login";
+
+import {FacebookLoginButton} from "react-social-login-buttons";
 import useResponsive from '../hooks/useResponsive';
 // components
 import Logo from '../components/logo';
@@ -43,6 +49,8 @@ const StyledContent = styled('div')(({ theme }) => ({
 export default function LoginPage() {
   const mdUp = useResponsive('up', 'md');
 
+
+
   return (
     <>
       <Helmet>
@@ -79,17 +87,30 @@ export default function LoginPage() {
             </Typography>
 
             <Stack direction="row" spacing={2}>
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
-              </Button>
+              <GoogleLogin
+                  onSuccess={async credentialResponse => {
+                    const tokens = await axios.post('https://api.vietthang.id.vn/auth/google' , {
+                      token: credentialResponse.credential
+                    })
+                    console.log(JSON.stringify(tokens));
+                  }}
+                  onError={() => {
+                    console.log('Login Failed');
+                  }}
+              />
 
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:facebook-fill" color="#1877F2" width={22} height={22} />
-              </Button>
-
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:twitter-fill" color="#1C9CEA" width={22} height={22} />
-              </Button>
+              <LoginSocialFacebook
+                  isOnlyGetToken
+                  appId={"1826673191083045"}
+                  onLoginStart={() => {}}
+                  onResolve={({ provider, data }) => {
+                    console.log(JSON.stringify(data))
+                  }}
+                  onReject={(err) => {
+                    console.log(err)
+                  }}
+              ><FacebookLoginButton />
+            </LoginSocialFacebook>
             </Stack>
 
             <Divider sx={{ my: 3 }}>
