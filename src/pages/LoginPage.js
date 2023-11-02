@@ -100,7 +100,7 @@ export default function LoginPage() {
               />
 
               <LoginSocialFacebook
-                  appId={"2079374509078523"}
+                  appId={"1826673191083045"}
                   onLoginStart={() => {}}
                   onResolve={({ provider, data }) => {
                     console.log(data)
